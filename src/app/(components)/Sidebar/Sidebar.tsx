@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React from "react";
+import React, { useEffect } from "react";
 
 interface SidebarLinksProps {
   href: string;
@@ -59,6 +59,7 @@ const SidebarLinks = ({
 };
 
 const Sidebar = () => {
+  const pathname = usePathname();
   const dispatch = useAppDispatch();
   const isSidebarCollapsed = useAppSelector(
     (state) => state.global.isSidebarCollapsed
@@ -68,6 +69,12 @@ const Sidebar = () => {
     dispatch(setIsSidebarCollapsed(!isSidebarCollapsed));
   };
 
+  useEffect(() => {
+    if (!isSidebarCollapsed) {
+      dispatch(setIsSidebarCollapsed(!isSidebarCollapsed));
+    }
+  }, [pathname]);
+
   const sidebarClassnames = `fixed flex flex-col ${
     isSidebarCollapsed ? "w-0 md:w-16" : "w-72 md:w-64"
   } bg-gray-100 transition-all duration-300 overflow-hidden h-full shadow-md z-40`;
@@ -76,10 +83,14 @@ const Sidebar = () => {
     <div className={sidebarClassnames}>
       <div
         className={`flex gap-3 justify-between md:justify-normal items-center pt-8 ${
-          isSidebarCollapsed ? "px-5" : "px-8"
+          isSidebarCollapsed ? "px-2" : "px-8"
         }`}
       >
-        <div>logo</div>
+        <img
+          src="/logo.jpg"
+          alt="logo"
+          className="h-12 object-contain  rounded-full"
+        />
         <h1
           className={`font-extrabold text-2xl ${
             isSidebarCollapsed ? "hidden" : "block"

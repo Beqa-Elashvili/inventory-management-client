@@ -2,6 +2,7 @@ import React, { ChangeEvent, FormEvent, useState } from "react";
 import { v4 as uuid } from "uuid";
 import Header from "@/app/(components)/Header/Header";
 import { CircleLoader } from "react-spinners";
+import { toast } from "react-toastify";
 
 type ProductFormData = {
   name: string;
@@ -44,8 +45,28 @@ const CreateProductModal: React.FC<CreateProductModalProps> = ({
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    onCreate(formData);
-    onClose();
+    if (
+      formData.name === "" ||
+      formData.price === 0 ||
+      formData.rating === 0 ||
+      formData.stockQuantity === 0
+    ) {
+      toast.error("Please provide all input", {
+        position: "top-right",
+      });
+      return;
+    } else {
+      onCreate(formData);
+      const resetFormData = Object.keys(formData).reduce((acc: any, key) => {
+        acc[key] =
+          key === "price" || key === "rating" || key === "stockQuantity"
+            ? 0
+            : "";
+        return acc;
+      }, {});
+      setFormData(resetFormData);
+      onClose();
+    }
   };
 
   if (!isOpen) return null;

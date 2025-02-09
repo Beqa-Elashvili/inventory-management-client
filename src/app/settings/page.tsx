@@ -3,6 +3,8 @@
 import React, { useState } from "react";
 import Header from "@/app/(components)/Header/Header";
 import { Switch } from "antd";
+import { useAppDispatch, useAppSelector } from "../redux";
+import { setIsDarkMode } from "@/state";
 
 type userSettingsProps = {
   label: string;
@@ -10,15 +12,18 @@ type userSettingsProps = {
   type: "text" | "toggle";
 };
 
-const mockSettings: userSettingsProps[] = [
-  { label: "Username", value: "john_doe", type: "text" },
-  { label: "Email", value: "john@example.com", type: "text" },
-  { label: "Notification", value: true, type: "toggle" },
-  { label: "Dark Mode", value: false, type: "toggle" },
-  { label: "Languge", value: "English", type: "text" },
-];
-
 const Settings = () => {
+  const dispatch = useAppDispatch();
+  const isDarkMode = useAppSelector((state) => state.global.isDarkMode);
+
+  const mockSettings: userSettingsProps[] = [
+    { label: "Username", value: "john_doe", type: "text" },
+    { label: "Email", value: "john@example.com", type: "text" },
+    { label: "Notification", value: true, type: "toggle" },
+    { label: "Dark Mode", value: isDarkMode, type: "toggle" },
+    { label: "Languge", value: "English", type: "text" },
+  ];
+
   const [userSettings, setUsetSettings] =
     useState<userSettingsProps[]>(mockSettings);
 
@@ -26,6 +31,10 @@ const Settings = () => {
     const settingsCopy = [...userSettings];
     settingsCopy[index].value = !settingsCopy[index].value as boolean;
     setUsetSettings(settingsCopy);
+  };
+
+  const toggleDarkMode = () => {
+    dispatch(setIsDarkMode(!isDarkMode));
   };
 
   return (
@@ -49,11 +58,21 @@ const Settings = () => {
                 <td className="py-2 px-4 ">{setting.label}</td>
                 <td className="py-2 px-4 ">
                   {setting.type === "toggle" ? (
-                    <Switch
-                      className="bg-gray-500"
-                      checked={setting.value as boolean}
-                      onChange={() => hanldeToggleChange(index)}
-                    />
+                    <>
+                      {setting.label === "Dark Mode" ? (
+                        <Switch
+                          className="bg-gray-500"
+                          checked={isDarkMode}
+                          onChange={toggleDarkMode}
+                        />
+                      ) : (
+                        <Switch
+                          className="bg-gray-500"
+                          checked={setting.value as boolean}
+                          onChange={() => hanldeToggleChange(index)}
+                        />
+                      )}
+                    </>
                   ) : (
                     <input
                       type="text"
@@ -77,3 +96,6 @@ const Settings = () => {
 };
 
 export default Settings;
+function dispatch(arg0: any) {
+  throw new Error("Function not implemented.");
+}

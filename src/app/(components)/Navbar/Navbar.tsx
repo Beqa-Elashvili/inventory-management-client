@@ -42,7 +42,6 @@ const Navbar = () => {
           </div>
         </div>
       </div>
-
       <div className="flex justify-between items-center gap-5">
         <div className="hidden md:flex justify-between items-center gap-5 ">
           <div>
@@ -61,10 +60,10 @@ const Navbar = () => {
             </span>
           </div>
           <hr className="w-0 h-7 border border-solid border-gray-300 mx-3" />
-          <div className="flex items-center gap-3  cursor-pointer">
-            <div className="w-9 h-9 ">image</div>
+          <div className="flex items-center gap-3 cursor-pointer">
+            <img src="logo2.jpg" className="w-9 h-9 rounded-full " />
           </div>
-          <span className="font-semibold">Ed Roh</span>
+          <span className="font-semibold">ADMIN</span>
         </div>
         <Link href="/settings">
           <Settings className="cursor-pointer text-gray-500" size={24} />
